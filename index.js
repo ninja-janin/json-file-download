@@ -6,31 +6,33 @@ $.getJSON(`/paramsData.json`, function(data){
   dataObj.forEach((dataObj, index) => {
     let areaName = dataObj.area.split('/')[1];
     let finalCount;
-    setTimeout(() => {
-      if (tempAreaName !== areaName) {
-        tempAreaName = areaName;
-        finalCount = count++;
 
-        let finalJsonFile = data.filter(function (data) {
-          let area = data.area.split('/')[1];
-          return area === areaName;
-        })
-        console.log(finalCount, ":", areaName, ":", finalJsonFile)
+    if (tempAreaName !== areaName) {
+      tempAreaName = areaName;
+      finalCount = count++;
 
-        //DownloadJSON
-        const blob = new Blob([JSON.stringify(finalJsonFile)], { type: "octet-stream" });
-        const href = URL.createObjectURL(blob);
-        const a = Object.assign(document.createElement("a"), {
-          href,
-          sytle: "display:none",
-          download: `${finalCount}:${areaName}.json`
-        });
-        document.body.appendChild(a)
-        a.click();
-        URL.revokeObjectURL(href);
-        a.remove();
-      }
-    }, 1000);
+      let finalJsonFile = data.filter(function (data) {
+        let area = data.area.split('/')[1];
+        return area === areaName;
+      })
+      console.log(finalCount, ":", areaName, ":", finalJsonFile)
+
+      //DownloadJSON
+      const blob = new Blob([JSON.stringify(finalJsonFile, null, 4)], { type: "application/json" });
+      const href = URL.createObjectURL(blob);
+      const br = Object.assign(document.createElement("br"))
+      const a = Object.assign(document.createElement("a"), {
+        href,
+        textContent: `${finalCount}.) ${areaName}`,
+        download: `${finalCount}:${areaName}.json`
+      });
+      document.body.appendChild(a)
+      document.body.appendChild(br)
+      // a.click();
+      // URL.revokeObjectURL(href);
+      // a.remove();
+    }
+
   });
 
 })
