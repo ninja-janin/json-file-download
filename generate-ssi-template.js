@@ -1,7 +1,7 @@
 function displayDownloadableFiles(object, area, prefecture_name) {
   let ssi_template = `<section id="airticket-and-hotel" class="js-check">
   <div class="section__container airhotel">
-    <h2 class="heading--title"><span class="heading--text js-area"></span>おすすめ航空券＋ホテル</h2>
+    <h2 class="heading--title"><span class="heading--text js-area">${object.area.split('/')[0]}</span>おすすめ航空券＋ホテル</h2>
     <div class="slideCardList__container">
       <ul class="slideCardList--col4 kokunai-goto__card js-slideCardList-counter">
         <li class="${object.area.split("/")[1]}--${prefecture_name}-ah01 slideCardList__item--col4" data-display="false"></li>
@@ -28,7 +28,7 @@ function displayDownloadableFiles(object, area, prefecture_name) {
   var element = document.createElement('a');
   element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(ssi_template));
   element.innerHTML = `${area}-${prefecture_name}_ah.shtml`; //link text
-  element.setAttribute('download', `${object.param}_ah.shtml`); //file name
+  element.setAttribute('download', `${area}_ah.shtml`); //file name
   // element.style.display = 'none';
   document.body.appendChild(element);
   document.body.appendChild(document.createElement('br'));
@@ -56,7 +56,6 @@ area.forEach((area, index) => {
       if(dataObj.param && dataObj.param.split("=")[1]) {
         let param = dataObj.param.split("=")[1];
         if(prefecture.hasOwnProperty(param)) {
-          console.log(prefecture[param])
           displayDownloadableFiles(dataObj, area, prefecture[param])
         }
       }
